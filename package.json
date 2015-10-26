@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/huweixuan/horde/issues"
   },
-  "homepage": "https://github.com/huweixuan/horde#readme"
+  "homepage": "https://github.com/huweixuan/horde#readme",
+  "dependencies": {
+    "koa": "^1.1.1"
+  }
 }
