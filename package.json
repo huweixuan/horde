@@ -1,0 +1,19 @@
+{
+  "name": "horde",
+  "version": "1.0.0",
+  "description": "blog",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huweixuan/horde.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "huweixuan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/huweixuan/horde/issues"
+  },
+  "homepage": "https://github.com/huweixuan/horde#readme"
+}
