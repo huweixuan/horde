@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-const Guid = require('guid');
 const render = require('./lib/render');
 const logger = require('koa-logger');
 const route = require('koa-route');
@@ -57,7 +56,7 @@ function *add() {
 
 function *show(id) {
     let res = yield horde.get(id);  
-    var post = res[0].post;
+    let post = res[0].post;
     if (!post) this.throw(404, 'invalid post id');
     this.body = yield render('show', {
         post: post
@@ -69,9 +68,8 @@ function *show(id) {
  */
 
 function *create() {
-    var post = yield parse(this);
+    let post = yield parse(this);
     yield horde.insert({
-        _id: Guid.raw(),
         post: post,
         createTime: new Date
     });
