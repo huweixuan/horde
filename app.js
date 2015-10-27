@@ -34,9 +34,7 @@ app.use(route.post('/post', create));
  */
 
 function *list() {
-    let res = yield horde.list({
-        include_docs: true
-    });
+    let res = yield horde.view('list', 'by_date');
     this.body = yield render('list', {
         posts: res[0].rows
     });
