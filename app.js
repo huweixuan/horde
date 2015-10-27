@@ -15,6 +15,8 @@ const app = koa();
 
 // components
 const PostList = require('./components/PostList');
+const New = require('./components/New');
+const Show = require('./components/Show');
 
 // database
 
@@ -50,7 +52,8 @@ function *list() {
  */
 
 function *add() {
-    this.body = '';
+    let reactHtml = New();
+    this.body = yield render('index.ejs', {reactOutput: reactHtml});
 }
 
 /**
@@ -61,7 +64,8 @@ function *show(id) {
     let res = yield horde.get(id);  
     let post = res[0].post;
     if (!post) this.throw(404, 'invalid post id');
-    this.body = '';
+    let reactHtml = Show(post);
+    this.body = yield render('index.ejs', {reactOutput: reactHtml});
 }
 
 /**
