@@ -3,17 +3,19 @@
 /**
  * Module dependencies.
  */
+const Guid = require('guid');
+const render = require('./lib/render');
+const logger = require('koa-logger');
+const route = require('koa-route');
+const parse = require('co-body');
+const koa = require('koa');
+const app = koa();
 
-let render = require('./lib/render');
-let logger = require('koa-logger');
-let route = require('koa-route');
-let parse = require('co-body');
-let koa = require('koa');
-let app = koa();
+// database
 
-// "database"
-
-let posts = [];
+const nano = require('nano')('http://172.16.5.104:5984');
+const coNano = require('co-nano')(nano);
+const horde = coNano.use('horde');
 
 // middleware
 
@@ -33,7 +35,12 @@ app.use(route.post('/post', create));
  */
 
 function *list() {
-  this.body = yield render('list', { posts: posts });
+    let res = yield horde.list({
+        include_docs: true
+    });
+    this.body = yield render('list', {
+        posts: res[0].rows
+    });
 }
 
 /**
@@ -41,7 +48,7 @@ function *list() {
  */
 
 function *add() {
-  this.body = yield render('new');
+    this.body = yield render('new');
 }
 
 /**
@@ -49,9 +56,12 @@ function *add() {
  */
 
 function *show(id) {
-  var post = posts[id];
-  if (!post) this.throw(404, 'invalid post id');
-  this.body = yield render('show', { post: post });
+    let res = yield horde.get(id);  
+    var post = res[0].post;
+    if (!post) this.throw(404, 'invalid post id');
+    this.body = yield render('show', {
+        post: post
+    });
 }
 
 /**
@@ -59,12 +69,15 @@ function *show(id) {
  */
 
 function *create() {
-  var post = yield parse(this);
-  var id = posts.push(post) - 1;
-  post.created_at = new Date;
-  post.id = id;
-  this.redirect('/');
+    var post = yield parse(this);
+    yield horde.insert({
+        _id: Guid.raw(),
+        post: post,
+        createTime: new Date
+    });
+    this.redirect('/');
 }
+
 
 // listen
 

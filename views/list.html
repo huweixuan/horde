@@ -9,7 +9,7 @@
   <ul id="posts">
     {% for post in posts %}
       <li>
-        <h2>{{ post.title }}</h2>
+        <h2>{{ post.doc.post.title }}</h2>
         <p><a href="/post/{{ post.id }}">Read post</a></p>
       </li>
     {% endfor %}
