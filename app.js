@@ -3,12 +3,18 @@
 /**
  * Module dependencies.
  */
+require('node-jsx').install();
+
 const render = require('./lib/render');
 const logger = require('koa-logger');
 const route = require('koa-route');
 const parse = require('co-body');
+const ejs = require('ejs');
 const koa = require('koa');
 const app = koa();
+
+// components
+const PostList = require('./components/PostList');
 
 // database
 
@@ -35,9 +41,8 @@ app.use(route.post('/post', create));
 
 function *list() {
     let res = yield horde.view('list', 'by_date');
-    this.body = yield render('list', {
-        posts: res[0].rows
-    });
+    let reactHtml = PostList({posts: res[0].rows});
+    this.body = yield render('index.ejs', {reactOutput: reactHtml});
 }
 
 /**
@@ -45,7 +50,7 @@ function *list() {
  */
 
 function *add() {
-    this.body = yield render('new');
+    this.body = '';
 }
 
 /**
@@ -56,9 +61,7 @@ function *show(id) {
     let res = yield horde.get(id);  
     let post = res[0].post;
     if (!post) this.throw(404, 'invalid post id');
-    this.body = yield render('show', {
-        post: post
-    });
+    this.body = '';
 }
 
 /**
