@@ -1,7 +1,6 @@
 'use strict';
 
 const React = require('react');
-const ReactDOMServer = require('react-dom/server');
 
 class PostList extends React.Component {
     render() {
@@ -25,4 +24,4 @@ class PostList extends React.Component {
     }
 }
 
-module.exports = (data) => ReactDOMServer.renderToString(<PostList data={data.posts}/>);
+module.exports = PostList;

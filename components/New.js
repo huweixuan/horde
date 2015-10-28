@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const ReactDOMServer = require('react-dom/server');
+const Button = require('./Button');
 
 class New extends React.Component {
     render() {
@@ -12,11 +12,11 @@ class New extends React.Component {
                 <form action="/post" method="post">
                     <p><input type="text" placeholder="Title" name="title"/></p>
                     <p><textarea placeholder="Contents" name="body"></textarea></p>
-                    <p><input type="submit" value="Create"/></p>
+                    <p><Button type="submit">Create</Button></p>
                 </form>
             </div>
         );
     }
 }
 
-module.exports = () => ReactDOMServer.renderToString(<New/>);
+module.exports = New;

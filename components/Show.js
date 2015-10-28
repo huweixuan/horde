@@ -1,7 +1,6 @@
 'use strict';
 
 const React = require('react');
-const ReactDOMServer = require('react-dom/server');
 
 class Show extends React.Component {
     render() {
@@ -14,4 +13,4 @@ class Show extends React.Component {
     }
 }
 
-module.exports = (data) => ReactDOMServer.renderToString(<Show title={data.title} body={data.body}/>);
+module.exports = Show;

@@ -13,11 +13,6 @@ const ejs = require('ejs');
 const koa = require('koa');
 const app = koa();
 
-// components
-const PostList = require('./components/PostList');
-const New = require('./components/New');
-const Show = require('./components/Show');
-
 // database
 
 const nano = require('nano')('http://172.16.5.104:5984');
@@ -43,8 +38,7 @@ app.use(route.post('/post', create));
 
 function *list() {
     let res = yield horde.view('list', 'by_date');
-    let reactHtml = PostList({posts: res[0].rows});
-    this.body = yield render('index.ejs', {reactOutput: reactHtml});
+    this.body = yield render('PostList', {'data': res[0].rows});
 }
 
 /**
@@ -52,8 +46,7 @@ function *list() {
  */
 
 function *add() {
-    let reactHtml = New();
-    this.body = yield render('index.ejs', {reactOutput: reactHtml});
+    this.body = yield render('New');
 }
 
 /**
@@ -64,8 +57,7 @@ function *show(id) {
     let res = yield horde.get(id);  
     let post = res[0].post;
     if (!post) this.throw(404, 'invalid post id');
-    let reactHtml = Show(post);
-    this.body = yield render('index.ejs', {reactOutput: reactHtml});
+    this.body = yield render('Show', {'title': post.title, 'body': post.body});
 }
 
 /**
