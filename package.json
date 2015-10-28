@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/huweixuan/horde#readme",
   "dependencies": {
+    "browserify-middleware": "^7.0.0",
     "co-body": "^4.0.0",
     "co-nano": "0.0.3",
     "co-views": "^2.1.0",
@@ -27,6 +28,7 @@
     "nano": "^6.1.5",
     "node-jsx": "^0.13.3",
     "react": "^0.13.3",
-    "react-style": "^0.5.5"
+    "react-style": "^0.5.5",
+    "reactify": "^1.1.1"
   }
 }

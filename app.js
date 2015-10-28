@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-require('node-jsx').install();
+require('node-jsx').install({extension: '.jsx'});
 
 const render = require('./lib/render');
 const logger = require('koa-logger');
@@ -12,6 +12,10 @@ const parse = require('co-body');
 const ejs = require('ejs');
 const koa = require('koa');
 const app = koa();
+
+const Middleware = require('browserify-middleware');
+const reactify = require('reactify');
+Middleware.settings('transform', ['reactify']);
 
 // database
 
@@ -29,6 +33,9 @@ app.use(route.get('/', list));
 app.use(route.get('/post/new', add));
 app.use(route.get('/post/:id', show));
 app.use(route.post('/post', create));
+
+app.use(route.get('/bundles/:name', js));
+app.use(route.get('/test', test));
 
 // route definitions
 
@@ -73,6 +80,24 @@ function *create() {
     this.redirect('/');
 }
 
+function *js(name) {   
+    let middleware = Middleware('./components/' + name + '.jsx');
+    let req = this.req;
+    let res = this.res;
+    let end = res.end;
+
+    this.body = yield function(next) {
+        res.end = function(data) {
+            res.end = end;
+            next(null, data);
+        }
+        middleware(req, res, next);
+    }
+}
+
+function *test() {   
+    this.body = yield render('Button');
+}
 
 // listen
 
